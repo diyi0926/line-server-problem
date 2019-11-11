@@ -1,16 +1,14 @@
 package com.example.linejavaserver.services;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
-import org.springframework.util.ResourceUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+// singleton class
 public class LineServer {
     private static LineServer instance = null;
     private List<Long> indexes = new ArrayList<>();
@@ -21,11 +19,13 @@ public class LineServer {
             InputStream inputStream = new ClassPathResource("file.txt").getInputStream();
             Scanner sc = new Scanner(inputStream, "UTF-8");
             while (sc.hasNextLine()) {
-                curIndex += sc.nextLine().length() + 2; // length of next line and '/n'
+                // length of next line and '/n', curIndex to the start of next line
+                curIndex += sc.nextLine().length() + 2; 
                 indexes.add(curIndex);
             }
             sc.close();
         } catch(IOException e) {
+            // throw no content exception when there is no input file
             throw new ResponseStatusException(HttpStatus.NO_CONTENT);
         }
         
